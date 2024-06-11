@@ -5,3 +5,5 @@
 azure-functions
 azure-identity==1.16.1
 azure-storage-blob==12.20.0
+azure-cli==2.61.0
+azure-cli-core==2.61.0

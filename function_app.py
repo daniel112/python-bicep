@@ -3,7 +3,8 @@ import logging
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient
 import os
-import subprocess
+# import subprocess
+from azure.cli.core import get_default_cli
 
 app = func.FunctionApp()
 
@@ -17,7 +18,8 @@ def HttpExample(req: func.HttpRequest) -> func.HttpResponse:
     # account_url = "https://dyobicepstorage2.blob.core.windows.net"
     _ = DefaultAzureCredential()
     logging.info('---Authenticated---')
-    run_az_cli_command(["az", "account", "list"])
+    # run_az_cli_command(['group', 'list'])
+    run_az_cli_command(["group", "list"])
     # Create the BlobServiceClient object
     # blob_service_client = BlobServiceClient(account_url, credential=credentials)
     current_dir = os.path.dirname(__file__)
@@ -42,12 +44,19 @@ def HttpExample(req: func.HttpRequest) -> func.HttpResponse:
             status_code=200
     )
 
-def run_az_cli_command(command):
-    try:
-        result = subprocess.run(command, check=True, text=True, capture_output=True)
-        print("Output:\n", result.stdout)
-        if result.stderr:
-            print("Errors:\n", result.stderr)
-    except subprocess.CalledProcessError as e:
-        print("An error occurred while running the Azure CLI command")
-        print("Error message:\n", e.stderr)
+# def run_az_cli_command(command):
+#     try:
+#         result = subprocess.run(command, check=True, text=True, capture_output=True)
+#         print("Output:\n", result.stdout)
+#         if result.stderr:
+#             print("Errors:\n", result.stderr)
+#     except subprocess.CalledProcessError as e:
+#         print("An error occurred while running the Azure CLI command")
+#         print("Error message:\n", e.stderr)
+
+
+
+def run_az_cli_command(args):
+    az_cli = get_default_cli()
+    az_cli.invoke(args)
+
